@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ToDoList from '$lib/components/ToDoList.svelte';
+	import MiniEditor from '$lib/components/miniEditor.svelte';
 </script>
 
-<ToDoList />
+<MiniEditor />
