@@ -1,5 +1,5 @@
 <script lang="ts">
-	import MiniEditor from '$lib/components/miniEditor.svelte';
+	import ToDov2 from '$lib/components/toDov2.svelte';
 </script>
 
-<MiniEditor />
+<ToDov2 />
