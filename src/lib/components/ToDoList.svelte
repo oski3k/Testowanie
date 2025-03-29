@@ -1,6 +1,7 @@
 <script lang="ts">
 	let toDoList = $state([['Zrobić coś', 0]]);
 	let nextIndex = $state(1);
+	let numberOfDoneTasks = $state(0);
 
 	function addTask() {
 		toDoList = [...toDoList, ['', nextIndex]];
@@ -9,6 +10,7 @@
 
 	function deleteTask(id: number) {
 		toDoList = toDoList.filter(([_, taskId]) => taskId !== id);
+		numberOfDoneTasks += 1;
 	}
 
 	function updateTask(id: number, value: string) {
@@ -18,6 +20,7 @@
 
 <div class="box">
 	<div id="add">
+		<span class="doneTasks">Numer of done tasks: {numberOfDoneTasks}</span>
 		<button id="addNewTask" onclick={addTask}>+</button>
 	</div>
 
@@ -35,11 +38,6 @@
 	</div>
 </div>
 
-<!-- Wyświetlanie listy dla debugowania -->
-{#each toDoList as [task, id]}
-	<span>{task} - {id}</span> <br />
-{/each}
-
 <style>
 	.box {
 		margin: 0 auto;
@@ -47,11 +45,14 @@
 		width: 500px;
 		height: 800px;
 		background-color: rgb(113, 106, 106);
+		margin-top: 10px;
 	}
 
 	#add {
 		width: 100%;
-		float: left;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 
 	#addNewTask {
@@ -62,6 +63,11 @@
 		float: right;
 		margin: 10px;
 		transition: 0.2s;
+	}
+
+	.doneTasks {
+		font-size: 20px;
+		margin: 10px;
 	}
 
 	#addNewTask:hover {
