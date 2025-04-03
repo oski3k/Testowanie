@@ -9,25 +9,38 @@
 
 	let type = 'div';
 
+	let editingTask: [number, number] | null = $state(null);
+
+	function init(e: HTMLInputElement) {
+		e.focus();
+		e.select();
+	}
+
 	function changePlace(value: string, index: number, nrTab: number) {
 		if (nrTab == 1) {
 			tab2 = [...tab2, [value, nextIndex2]];
 			nextIndex2 += 1;
-			tab1 = tab1.filter((oldValue, oldIndex) => {
-				oldIndex != index;
-			});
+			tab1 = tab1.filter((_, oldIndex) => oldIndex !== index);
 		}
 		if (nrTab == 2) {
 			tab3 = [...tab3, [value, nextIndex3]];
 			nextIndex3 += 1;
-			tab2 = tab2.filter((oldValue, oldIndex) => {
-				oldIndex != index;
-			});
+			tab2 = tab2.filter((_, oldIndex) => oldIndex !== index);
 		}
 		if (nrTab == 3) {
-			tab3 = tab3.filter((oldValue, oldIndex) => {
-				oldIndex != index;
-			});
+			tab3 = tab3.filter((_, oldIndex) => oldIndex !== index);
+		}
+	}
+
+	function changeTask(newValue: string, index: number, nrTab: number) {
+		if (nrTab == 1) {
+			tab1 = tab1.map(([value, id]) => (id == index ? [newValue, id] : [value, id]));
+		}
+		if (nrTab == 2) {
+			tab2 = tab2.map(([value, id]) => (id == index ? [newValue, id] : [value, id]));
+		}
+		if (nrTab == 2) {
+			tab3 = tab3.map(([value, id]) => (id == index ? [newValue, id] : [value, id]));
 		}
 	}
 </script>
@@ -56,11 +69,30 @@
 					role="button"
 					tabindex="0"
 					class="toDo"
-					onclick={() => {
+					ondblclick={() => {
 						changePlace(value, index, 1);
 					}}
+					onclick={() => {
+						if (editingTask == null) {
+							editingTask = [1, Number(index)];
+						}
+					}}
 				>
-					{value}
+					{#if editingTask && editingTask[0] == 1 && editingTask[1] == index}
+						<input
+							type="text"
+							use:init
+							onkeydown={(e) => {
+								if (e.key == 'Enter') {
+									changeTask(e.currentTarget.value, index, 1);
+									editingTask = null;
+								}
+							}}
+							{value}
+						/>
+					{:else}
+						{value}
+					{/if}
 				</svelte:element>
 			{/each}
 		</div>
@@ -73,8 +105,13 @@
 					role="button"
 					tabindex="0"
 					class="toDo"
-					onclick={() => {
+					ondblclick={() => {
 						changePlace(value, index, 2);
+					}}
+					onclick={() => {
+						if (editingTask == null) {
+							editingTask = [2, Number(index)];
+						}
 					}}
 				>
 					{value}
@@ -90,8 +127,13 @@
 					role="button"
 					tabindex="0"
 					class="toDo"
-					onclick={() => {
+					ondblclick={() => {
 						changePlace(value, index, 3);
+					}}
+					onclick={() => {
+						if (editingTask == null) {
+							editingTask = [3, Number(index)];
+						}
 					}}
 				>
 					{value}

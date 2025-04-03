@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ToDov2 from '$lib/components/toDov2.svelte';
+	import Plansza from '$lib/components/Plansza.svelte';
 </script>
 
-<ToDov2 />
+<Plansza />
