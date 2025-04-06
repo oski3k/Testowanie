@@ -1,6 +1,7 @@
 <script lang="ts">
 	let type = 'button';
 	let loading = $state(true);
+	let error: string | undefined = $state(undefined);
 	interface Todo {
 		userId: number;
 		id: number;
@@ -10,8 +11,13 @@
 	let ApiFiles: Todo[] = $state([]);
 	async function takeApi() {
 		loading = true;
-		const api = await fetch('https://jsonplaceholder.typicode.com/todos/');
-		ApiFiles = await api.json();
+		error = undefined;
+		try {
+			const api = await fetch('https://jsonplaceholder.typicode.com/todos/');
+			ApiFiles = await api.json();
+		} catch {
+			error = 'Connecting with API failed';
+		}
 		loading = false;
 	}
 	takeApi();
@@ -19,6 +25,8 @@
 
 {#if loading}
 	Loading...
+{:else if error != undefined}
+	{error}
 {:else}
 	<div class="todo-container">
 		{#each ApiFiles as file}
