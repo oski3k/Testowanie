@@ -1,5 +1,14 @@
 <script lang="ts">
-	import Plansza from '$lib/components/Plansza.svelte';
+	import ApiTest from '$lib/components/APITest.svelte';
 </script>
 
-<Plansza />
+<ApiTest />
+
+<style>
+	:global {
+		body {
+			background-color: #333;
+			color: white;
+		}
+	}
+</style>
